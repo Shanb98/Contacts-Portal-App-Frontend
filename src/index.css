@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bg-custom-bg {
+    background-image: url('./assets/bg.jpeg'); /* Adjust the path to your image */
+    background-size: cover;
+    background-position: center;
+  }
