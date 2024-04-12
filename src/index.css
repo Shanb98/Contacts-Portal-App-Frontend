@@ -3,7 +3,30 @@
 @tailwind utilities;
 
 .bg-custom-bg {
-    background-image: url('./assets/bg.jpeg'); /* Adjust the path to your image */
+    background-image: url('./assets/bg.png'); /* Adjust the path to your image */
     background-size: cover;
     background-position: center;
-  }
+}
+
+.w-bg-custom-bg {
+  background-image: url('./assets/w-bg.png'); /* Adjust the path to your image */
+  background-size: cover;
+  background-position: center;
+}
+
+.placeholder-FuturaMdBT::placeholder {
+  font-family: 'Futura Md BT';
+  color: #083F46;
+}
+
+@font-face {
+  font-family: 'Futura Md BT';
+  src: url('path/to/futura-md-bt.woff2') format('woff2'), /* Modern Browsers */
+       url('path/to/futura-md-bt.woff') format('woff'); /* Legacy Browsers */
+  font-weight: 900; /* Font weight set to 400 (normal) */
+}
+
+.input-field {
+  font-family: 'Futura Md BT', sans-serif;
+  font-weight: 900; /* Font weight set to 400 (normal) */
+}
