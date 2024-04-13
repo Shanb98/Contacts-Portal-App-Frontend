@@ -3,13 +3,9 @@ import logo2 from "../assets/logo2.png";
 import logout from "../assets/logout.png";
 import InputField from "../components/InputField";
 import PrimaryButton from "../components/PrimaryButton";
-import { Radio } from "@material-tailwind/react";
-const NewContact = () => {
-  const [selectedGender, setSelectedGender] = useState("");
 
-  const handleGenderChange = (event) => {
-    setSelectedGender(event.target.value);
-  };
+const NewContacts = () => {
+
   return (
     <div>
       <div className="bg-custom-bg min-h-screen flex flex-col justify-center items-center relative overflow-hidden">
@@ -176,4 +172,4 @@ const NewContact = () => {
   );
 };
 
-export default NewContact;
+export default NewContacts;
