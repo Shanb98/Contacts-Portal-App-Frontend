@@ -19,7 +19,7 @@ const Login = () => {
       <div className="flex-1 absolute -left-[786px] -top-[370px] w-[1502px] h-[1502px] bg-[#083F46] rounded-full text-white flex items-center justify-center overflow-hidden md:w-screen md:h-screen xl:w-[1502px] xl:h-[1402px] 2xl:w-[1802px] 2xl:h-[1802px]">
         <div
           className="relative z-10 w-full max-w-md px-4"
-          style={{ left: "20%", position: "relative" }}
+          style={{ left: "23%", position: "relative" }}
         >
           <div
             className=""
@@ -45,7 +45,7 @@ const Login = () => {
           <br />
           <br />
           <InputField
-            label="E-mail"
+            label="e-mail"
             name="email"
             type="email"
             placeholder="Enter your email"
@@ -57,6 +57,19 @@ const Login = () => {
             type="password"
             placeholder="Enter your password"
           />
+          <br />
+          <div
+            className="flex flex-row items-center gap-5 mt-4"
+            style={{ width: "500px" }}
+          >
+            <div>
+              <PrimaryButton label="Login" textcolor="#ffffff" type="submit" />
+            </div>
+            <div className="pt-3 pt-3 font-futura text-xl font-normal">or</div>
+            <div className="pt-3 font-futura text-2xl font-medium underline">
+              <a href="#">Click here to Register</a>
+            </div>
+          </div>
         </div>
       </div>
       <div

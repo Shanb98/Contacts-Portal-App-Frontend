@@ -1,24 +1,16 @@
-import React from 'react'
+import React from 'react';
 
-function PrimaryButton( { label , eventname, bgcolor, textcolor, type }) {
-  
-  
-    const buttonStyle = {
-        backgroundColor:bgcolor,
-        color: textcolor,
-    }
-  
-  
-    return (
+function PrimaryButton({ label, eventname, bgcolor = 'transparent', textcolor, type }) {
+  return (
     <button
-    type="submit"
-    className="w-full rounded-md h-[44px] mt-3 "
-    onClick={eventname}
-    style={buttonStyle}
+      type={type}
+      className="rounded-full mt-3 bg-transparent border border-white text-white px-6 py-2 font-futura text-xl font-normal hover:bg-white hover:text-black transition duration-300"
+      style={{ backgroundColor: bgcolor, color: textcolor }}
+      onClick={eventname}
     >
-{label}
+      {label}
     </button>
-  )
+  );
 }
 
-export default PrimaryButton
+export default PrimaryButton;
