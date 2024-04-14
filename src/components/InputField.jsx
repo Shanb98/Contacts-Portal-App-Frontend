@@ -17,7 +17,7 @@ function InputField({ label, name, type, placeholder, value, onChange }) {
           placeholder={placeholder}
           value={value}
           onChange={handleInputChange}
-          className="py-2 pl-10 pr-10 leading-5 rounded-full border border-gray-600 bg-white text-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 w-full text-2xl font-normal text-left placeholder-blue-800::placeholder placeholder-opacity-100 placeholder-FuturaMdBT"
+          className="py-2 pl-10 pr-10 leading-5 rounded-full border border-gray-600 bg-white text-gray-700 placeholder-teal-dark focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 w-full text-2xl font-futura text-left placeholder-blue-800::placeholder placeholder-opacity-100 placeholder-Futura"
           style={{ width: '480px', height: '50px' }}
         />
       </div>
