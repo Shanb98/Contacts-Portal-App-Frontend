@@ -144,7 +144,7 @@ const Register = () => {
             </div>
 
             <div className="pt-3 font-futura text-2xl font-medium underline">
-              <a href="#">{`<`} Back to login</a>
+              <a href="#" onClick={handleLoginNow}>{`<`} Back to login</a>
             </div>
           </div>
         </div>

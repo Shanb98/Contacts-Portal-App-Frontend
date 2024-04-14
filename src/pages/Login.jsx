@@ -6,6 +6,7 @@ import PrimaryButton from "../components/PrimaryButton";
 import logo1 from "../assets/logo1.png";
 import axios from "axios";
 import Cookies from "js-cookie";
+import {jwtDecode } from "jwt-decode";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -54,7 +55,16 @@ const Login = () => {
 
       Cookies.set("jwtToken", jwtToken);
 
-      navigate("/");
+      const decoded = jwtDecode(jwtToken);
+      const jsonUser = JSON.stringify(decoded, null, 2);
+      console.log(jsonUser);
+      const userObject = JSON.parse(jsonUser);
+      if( userObject.user.contacts == 0){
+        navigate("/");
+      }else{
+        navigate("/contacts/view");
+      }
+
     } catch (error) {
       console.error("Login failed:", error);
 

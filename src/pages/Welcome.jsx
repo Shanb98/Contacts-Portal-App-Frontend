@@ -1,9 +1,17 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import logo2 from "../assets/logo2.png";
 import logout from "../assets/logout.png";
 import PrimaryButton from "../components/PrimaryButton";
 
 const Welcome = () => {
+  const navigate = useNavigate();
+  const handleContact = () => {
+    navigate("/contacts/new");
+  };
+  const handleLogout = () => {
+    navigate("/login");
+  };
   return (
     <div>
       <div className="bg-custom-bg min-h-screen flex flex-col justify-center items-center relative overflow-hidden">
@@ -79,6 +87,7 @@ const Welcome = () => {
                 <div>
                   <PrimaryButton
                     label="add your first contact"
+                    eventname={handleContact}
                     textcolor="#ffffff"
                     type="submit"
                   />
@@ -97,7 +106,7 @@ const Welcome = () => {
                   />
                 </div>
                 <div className="pt-9 text-white font-futura text-2xl font-medium underline">
-                  <a href="#">logout</a>
+                  <a href="#" onClick={handleLogout}>logout</a>
                 </div>
               </div>
             </footer>
