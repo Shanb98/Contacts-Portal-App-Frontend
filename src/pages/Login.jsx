@@ -1,9 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import bg from "../assets/bg.png";
 import InputField from "../components/InputField";
 import PrimaryButton from "../components/PrimaryButton";
 import logo1 from "../assets/logo1.png";
+import axios from 'axios';
+import Cookies from 'js-cookie';
+
+
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState(null);
+  const navigate = useNavigate();
+
+  const handleEmailChange = (newValue) => {
+    setEmail(newValue);
+  };
+
+  const handlePasswordChange = (newValue) => {
+    setPassword(newValue);
+  };
+
   useEffect(() => {
     document.body.style.overflowY = "hidden";
     document.documentElement.style.overflowY = "hidden";
@@ -13,6 +31,52 @@ const Login = () => {
       document.documentElement.style.overflowY = "";
     };
   }, []);
+
+
+  const handleRegisterClick = () => {
+    // Navigate to the "/register" route when the link is clicked
+    navigate('/register');
+  };
+
+  const handleLogin = async () => {
+    console.log("Email:", email);
+    console.log("Password:", password);
+
+    try {
+
+      const response = await axios.post('http://localhost:5001/api/users/login', {
+        email: email,
+        password: password,
+      });
+  
+      // Extract the JWT token from the response
+      const jwtToken = response.data.accessToken;
+  
+
+  
+      // Log the JWT token
+      console.log('JWT Token:', jwtToken);
+  
+      Cookies.set('jwtToken', jwtToken);
+
+      navigate("/");
+    } catch (error) {
+      console.error('Login failed:', error);
+
+      if (error.response && error.response.status === 500) {
+        // Internal Server Error (500) - Invalid email or password
+        if (error.response.data.message === 'Email or password is not valid') {
+          setLoginError('Invalid email or password. Please try again.');
+        } else {
+          setLoginError('Login failed. Please try again later.');
+        }
+      } else {
+        // Other error (e.g., network issues)
+        setLoginError('Login failed. Please try again later.');
+      }
+    }
+  };
+
 
   return (
     <div className="flex flex-row h-screen relative">
@@ -45,10 +109,12 @@ const Login = () => {
           <br />
           <br />
           <InputField
-            label="e-mail"
+            label="Email"
             name="email"
             type="email"
             placeholder="Enter your email"
+            value={email}
+            onChange={handleEmailChange}
           />
           <br />
           <InputField
@@ -56,18 +122,33 @@ const Login = () => {
             name="password"
             type="password"
             placeholder="Enter your password"
+            value={password}
+            onChange={handlePasswordChange}
           />
-          <br />
+
+          {loginError && (
+  <p className="text-xs text-center text-red-600 bg-pink-100 border border-red-600 rounded-md py-2 mx-auto max-w-xs">
+    {loginError}
+  </p>
+)}
+<br />
           <div
             className="flex flex-row items-center gap-5 mt-4"
             style={{ width: "500px" }}
           >
             <div>
-              <PrimaryButton label="Login" textcolor="#ffffff" type="submit" />
+              <PrimaryButton
+                label="Login"
+                eventname={handleLogin}
+                textcolor="#ffffff"
+                type="submit"
+              />
             </div>
             <div className="pt-3 pt-3 font-futura text-xl font-normal">or</div>
             <div className="pt-3 font-futura text-2xl font-medium underline">
-              <a href="#">Click here to Register</a>
+        <a href="#" onClick={handleRegisterClick}>
+          Click here to Register
+        </a>
             </div>
           </div>
         </div>
