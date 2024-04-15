@@ -1,14 +1,89 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import logo2 from "../assets/logo2.png";
 import logout from "../assets/logout.png";
 import InputField from "../components/InputField";
 import PrimaryButton from "../components/PrimaryButton";
+import Cookies from 'js-cookie';
 
 const NewContacts = () => {
+  const [email, setEmail] = useState("");
+  const [fullname, setFullname] = useState("");
+  const [phone, setPhone] = useState("");
+  const [gender, setGender] = useState(""); 
+  const [Success, setSuccess] = useState(false);
+  const navigate = useNavigate();
+  const handleEmailChange = (newValue) => {
+    setEmail(newValue);
+  };
+  const handleFullnameChange = (newValue) => {
+    setFullname(newValue);
+  };
+  const handlePhoneChange = (newValue) => {
+    setPhone(newValue);
+  };
+
+  const handleGenderChange = (event) => {
+    // Update the selected gender state when a radio button is clicked
+    setGender(event.target.value);
+  };
+
+  const handleLoginNow = () => {
+    navigate("/login"); // Navigate to the login page
+  };
+
+
+  const handleViewContacts = () => {
+    navigate("/contacts/view"); // Navigate to the login page
+  };
+  const handleCreate = async () => {
+    console.log("Email:", email);
+    console.log("Name:", fullname);
+    console.log("Phone:", phone);
+    console.log("Gender:", gender);
+    try {
+    // Extract the JWT token from local storage
+    const jwtToken = Cookies.get('jwtToken');
+
+    // Construct the headers object with the bearer token
+    const headers = {
+      'Authorization': `Bearer ${jwtToken}`,
+      'Content-Type': 'application/json'
+    };
+
+    const payload = {
+      name: fullname,
+      phone: phone,
+      email: email,
+      gender: gender,
+    };
+    const response = await fetch('http://localhost:5001/api/contacts/create', {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(payload)
+    });
+      // Handle response status
+      if (response.ok) {
+        console.log('contact created successfully!');
+        setSuccess(true);
+      } else {
+        console.error('Error:', response.statusText);
+        navigate("/login");
+      }
+    } catch (error) { 
+      console.error('Error:', error.message); 
+    }
+  };
 
   return (
     <div>
       <div className="bg-custom-bg min-h-screen flex flex-col justify-center items-center relative overflow-hidden">
+      <div
+        className={`flex-1 bg-cover bg-center ${
+          Success ? "filter blur-sm" : ""
+        }`}
+       // style={{ backgroundImage: `url(${logo1})` }}
+      >
         <div
           className="rounded-full bg-[#083F46]"
           style={{
@@ -79,6 +154,8 @@ const NewContacts = () => {
                       name="fullname"
                       type="fullname"
                       placeholder="Enter your full name"
+                      value={fullname}
+            onChange={handleFullnameChange}
                     />
                   </div>
                   <div>
@@ -87,6 +164,8 @@ const NewContacts = () => {
                       name="email"
                       type="email"
                       placeholder="Enter your email"
+                      value={email}
+            onChange={handleEmailChange}
                     />
                   </div>
                 </div>
@@ -99,39 +178,45 @@ const NewContacts = () => {
                       name="phone"
                       type="phone"
                       placeholder="Enter your phone"
+                      value={phone}
+            onChange={handlePhoneChange}
                     />
                   </div>
                   <div className="flex flex-row gap-20">
-                    <div class="font-normal text-xl text-white font-futura pt-4">
+                    <div class="font-normal text-xl text-white font-futura pt-5">
                       Gender
                     </div>
 
                     <div className="flex items-center me-4">
                       <input
-                        id="inline-radio"
-                        type="radio"
-                        value=""
-                        name="inline-radio-group"
+            type="radio"
+            id="male"
+            name="gender"
+            value="male"
+            checked={gender === "male"}
+            onChange={handleGenderChange}
                         className="w-4 h-4 text-blue-600 bg-transparent border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                       />
                       <label
                         htmlFor="inline-radio"
-                        className="ms-2 font-futura text-xl font-medium text-gray-900 dark:text-gray-300"
+                        className="ms-2 font-futura text-xl font-medium text-white-900 dark:text-white-300"
                       >
                         male
                       </label>
                     </div>
                     <div className="flex items-center me-4">
                       <input
-                        id="inline-2-radio"
-                        type="radio"
-                        value=""
-                        name="inline-radio-group"
+            type="radio"
+            id="female"
+            name="gender"
+            value="female"
+            checked={gender === "female"}
+            onChange={handleGenderChange}
                         className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                       />
                       <label
                         htmlFor="inline-2-radio"
-                        className="ms-2 font-futura text-xl font-medium text-gray-900 dark:text-gray-300"
+                        className="ms-2 font-futura text-xl font-medium text-white-900 dark:text-white-300"
                       >
                         female
                       </label>
@@ -143,6 +228,7 @@ const NewContacts = () => {
                 <div>
                   <PrimaryButton
                     label="add your first contact"
+                    eventname={handleCreate}
                     textcolor="#ffffff"
                     type="submit"
                   />
@@ -167,7 +253,31 @@ const NewContacts = () => {
             </footer>
           </div>
         </div>
+        </div>
       </div>
+      {Success && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 ">
+          <div className="bg-white p-8 rounded-lg text-center w-1/2 h-1/3 space-y-10">
+            <p className="text-teal-dark text-2xl font-futura font-bold mb-4"> Your contact has been saved successfully!</p>
+            <div className="flex flex-row gap-20 pl-14">
+            <button
+              onClick={handleAddContacts}
+              className="bg-teal-dark hover:bg-teal-700 font-futura text-white text-xl font-bold py-2 px-4 rounded-full h-12 w-48"
+            >
+              Add Contacts
+            </button>
+            <button
+              onClick={handleViewContacts}
+              className="bg-teal-dark hover:bg-teal-700 font-futura text-white text-xl font-bold py-2 px-4 rounded-full h-12 w-48"
+            >
+              View Contacts
+            </button>
+            </div>
+
+          </div>
+        </div>
+        
+      )}
     </div>
   );
 };
