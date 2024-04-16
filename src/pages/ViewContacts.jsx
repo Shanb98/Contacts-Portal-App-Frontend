@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 import logo2 from "../assets/logo2.png";
 import logout from "../assets/logout.png";
 import InputField from "../components/InputField";
@@ -6,28 +7,50 @@ import PrimaryButton from "../components/PrimaryButton";
 import edit from "../assets/edit.png";
 import deleteicon from "../assets/delete.png";
 import userimg from "../assets/user.png";
+import axios from 'axios';
+import Cookies from 'js-cookie';
+
 
 const ViewContact = () => {
-  const users = [
-    {
-      name: "Shan Basnayake",
-      gender: "Male",
-      email: "shanbasnayake@gmail.com",
-      phone: "0765456432",
-    },
-    {
-      name: "Jane Doe",
-      gender: "Female",
-      email: "janedoe@example.com",
-      phone: "1234567890",
-    },
-    {
-      name: "John Smith",
-      gender: "Male",
-      email: "johnsmith@example.com",
-      phone: "0987654321",
-    },
-  ];
+  const [users, setUsers] = useState([]);
+  const [editableRows, setEditableRows] = useState({});
+  
+  const navigate = useNavigate();
+  const handleContact = () => {
+    navigate("/contacts/new");
+  };
+  const handleLogout = () => {
+    navigate("/login");
+  };
+
+
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const jwtToken = Cookies.get('jwtToken');
+        const headers = {
+          Authorization: `Bearer ${jwtToken}`,
+        };
+    
+        const response = await axios.get('http://localhost:5001/api/contacts/getall', {
+          headers: headers,
+        });
+        if (response.data && response.data.length > 0) {
+          // Update the users state with the fetched data
+          setUsers(response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching users:', error);
+        // Handle error (e.g., display error message)
+      }
+    };
+
+    fetchUsers(); 
+
+
+  }, []); 
+
   return (
     <div>
       <div className="bg-custom-bg min-h-screen flex flex-col justify-center items-center relative overflow-hidden">
@@ -97,7 +120,8 @@ const ViewContact = () => {
 
                 <div>
                   <PrimaryButton
-                    label="add your first contact"
+                    label="add new contact"
+                    eventname={handleContact}
                     textcolor="#ffffff"
                     type="submit"
                   />
@@ -207,7 +231,7 @@ const ViewContact = () => {
                   />
                 </div>
                 <div className="pt-9 text-white font-futura text-2xl font-medium underline">
-                  <a href="#">logout</a>
+                  <a href="#" onClick={handleLogout}>logout</a>
                 </div>
               </div>
             </footer>

@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import logo2 from "../assets/logo2.png";
 import logout from "../assets/logout.png";
 import InputField from "../components/InputField";
 import PrimaryButton from "../components/PrimaryButton";
 import Cookies from 'js-cookie';
+import {jwtDecode } from "jwt-decode";
 
 const NewContacts = () => {
   const [email, setEmail] = useState("");
@@ -12,7 +13,24 @@ const NewContacts = () => {
   const [phone, setPhone] = useState("");
   const [gender, setGender] = useState(""); 
   const [Success, setSuccess] = useState(false);
+  const [word, setWord] = useState("");
   const navigate = useNavigate();
+
+
+  useEffect(() => {
+    const jwtToken = Cookies.get('jwtToken') ;
+
+    const decoded = jwtDecode(jwtToken);
+    const jsonUser = JSON.stringify(decoded, null, 2);
+    console.log(jsonUser);
+    const userObject = JSON.parse(jsonUser);
+    if( userObject.user.contacts == 0){
+      setWord("add your first contact")
+    }else{
+      setWord("add your contact")
+    }
+
+  }, []);
   const handleEmailChange = (newValue) => {
     setEmail(newValue);
   };
@@ -32,7 +50,9 @@ const NewContacts = () => {
     navigate("/login"); // Navigate to the login page
   };
 
-
+  const handleAddContacts = () => {
+    setSuccess(false);
+  };
   const handleViewContacts = () => {
     navigate("/contacts/view"); // Navigate to the login page
   };
@@ -227,7 +247,7 @@ const NewContacts = () => {
                 <br />
                 <div>
                   <PrimaryButton
-                    label="add your first contact"
+                    label={word}
                     eventname={handleCreate}
                     textcolor="#ffffff"
                     type="submit"
@@ -247,7 +267,7 @@ const NewContacts = () => {
                   />
                 </div>
                 <div className="pt-9 text-white font-futura text-2xl font-medium underline">
-                  <a href="#">logout</a>
+                  <a href="#" onClick={handleLoginNow}>logout</a>
                 </div>
               </div>
             </footer>
