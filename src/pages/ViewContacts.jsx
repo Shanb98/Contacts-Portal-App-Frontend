@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import logo2 from "../assets/logo2.png";
 import logout from "../assets/logout.png";
@@ -6,54 +6,126 @@ import InputField from "../components/InputField";
 import PrimaryButton from "../components/PrimaryButton";
 import edit from "../assets/edit.png";
 import deleteicon from "../assets/delete.png";
+import toggle from "../assets/toggle.png";
 import userimg from "../assets/user.png";
-import axios from 'axios';
-import Cookies from 'js-cookie';
-
+import axios from "axios";
+import Cookies from "js-cookie";
 
 const ViewContact = () => {
   const [users, setUsers] = useState([]);
-  const [editableRows, setEditableRows] = useState({});
-  
+  const [editMode, setEditMode] = useState(false);
+  const [editedName, setEditedName] = useState("");
+  const [editedGender, seteditedGender] = useState("");
+  const [editedEmail, setEditedEmail] = useState("");
+  const [editedPhone, setEditedPhone] = useState("");
+  const [Success, setSuccess] = useState(false);
+ 
+
   const navigate = useNavigate();
+
   const handleContact = () => {
     navigate("/contacts/new");
   };
   const handleLogout = () => {
     navigate("/login");
   };
+  const handleSucsess = () => {
+    setSuccess(false);
+    window.location.reload();
+  };
 
+  const handleEdit = (id,name , gender , email , phone) => {
+    console.log(id);
+    seteditedGender(gender)
+    setEditedName(name); 
+    setEditedEmail(email);
+    setEditedPhone(phone);
+    setEditMode(!editMode); 
+  };
 
+  const handleSave = async (user) => {
+    console.log(user)
+    console.log("Edited Name:", editedName);
+    console.log("Edited Name:", editedGender);
+    console.log("Edited Name:", editedPhone);
+    console.log("Edited Name:", editedEmail);
 
+    try {
+      // Extract the JWT token from local storage
+      const jwtToken = Cookies.get('jwtToken');
+  
+      // Construct the headers object with the bearer token
+      const headers = {
+        'Authorization': `Bearer ${jwtToken}`,
+        'Content-Type': 'application/json'
+      };
+  
+      const payload = {
+        name: editedName,
+        phone: editedPhone,
+        email: editedEmail,
+        gender: editedGender,
+      };
+      const response = await fetch(`http://localhost:5001/api/contacts/${user}`, {
+        method: 'PUT',
+        headers: headers,
+        body: JSON.stringify(payload)
+      });
+        // Handle response status
+        if (response.ok) {
+          console.log('contact updated successfully!');
+          setSuccess(true);
+        } else {
+          console.error('Error:', response.statusText);
+          navigate("/login");
+        }
+      } catch (error) { 
+        console.error('Error:', error.message); 
+      }
+
+  };
+  const toggleGender = () => {
+    if (editedGender === "male") {
+      seteditedGender("female");
+    } else if (editedGender === "female") {
+      seteditedGender("male");
+    }
+  };
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const jwtToken = Cookies.get('jwtToken');
+        const jwtToken = Cookies.get("jwtToken");
         const headers = {
           Authorization: `Bearer ${jwtToken}`,
         };
-    
-        const response = await axios.get('http://localhost:5001/api/contacts/getall', {
-          headers: headers,
-        });
+
+        const response = await axios.get(
+          "http://localhost:5001/api/contacts/getall",
+          {
+            headers: headers,
+          }
+        );
         if (response.data && response.data.length > 0) {
           // Update the users state with the fetched data
           setUsers(response.data);
         }
       } catch (error) {
-        console.error('Error fetching users:', error);
+        console.error("Error fetching users:", error);
         // Handle error (e.g., display error message)
       }
     };
 
-    fetchUsers(); 
-
-
-  }, []); 
+    fetchUsers();
+  }, []);
 
   return (
     <div>
       <div className="bg-custom-bg min-h-screen flex flex-col justify-center items-center relative overflow-hidden">
+      <div
+        className={`flex-1 bg-cover bg-center ${
+          Success ? "filter blur-sm" : ""
+        }`}
+      >
         <div
           className="rounded-full bg-[#083F46]"
           style={{
@@ -175,42 +247,97 @@ const ViewContact = () => {
                             </a>
                           </td>
                           <td className="px-6 py-4 text-base font-semibold text-teal-dark whitespace-nowrap dark:text-teal-dark">
-                            {user.name}
+                            {editMode ? (
+                              <input
+                                type="text"
+                                defaultValue={editedName}
+                                className="w-36 px-2 py-1  focus:outline-none bg-teal-dark bg-opacity-10"
+                                onChange={(e) => setEditedName(e.target.value)}
+                              />
+                            ) : (
+                              user.name
+                            )}
                           </td>
                           <td className="px-6 py-4 text-teal-dark text-base font-semibold">
-                            {user.gender}
+                          {editMode ? (
+                    <div className="relative">
+                      <input 
+                        type="text" 
+                        value={editedGender} 
+                        className="w-24 px-2 py-1  focus:outline-none bg-teal-dark bg-opacity-10"
+                        onChange={(e) => seteditedGender(e.target.value)}
+                      />
+                      <a href="#" onClick={toggleGender} className="absolute right-0 top-0 mt-2 mr-2">
+                        <img src={toggle} alt="Toggle Gender" height={20} width={20} />
+                      </a>
+                    </div>
+                  ) : (
+                    user.gender
+                  )}
                           </td>
                           <td className="px-6 py-4 text-teal-dark text-base font-semibold">
-                            {user.email}
+                          {editMode ? (
+                              <input
+                                type="text"
+                                defaultValue={editedEmail}
+                                className="w-60 px-2 py-1  focus:outline-none bg-teal-dark bg-opacity-10"
+                                onChange={(e) => setEditedEmail(e.target.value)}
+                              />
+                            ) : (
+                              user.email
+                            )}
                           </td>
                           <td className="px-6 py-4 text-teal-dark text-base font-semibold">
-                            {user.phone}
+                          {editMode ? (
+                              <input
+                                type="text"
+                                defaultValue={editedPhone}
+                                className="w-28 px-2 py-1  focus:outline-none bg-teal-dark bg-opacity-10"
+                                onChange={(e) => setEditedPhone(e.target.value)}
+                              />
+                            ) : (
+                              user.phone
+                            )}
                           </td>
                           <td className="px-6 py-4 text-right pr-0	">
-                            <a
-                              href="#"
-                              className="font-medium text-blue-600 dark:text-blue-500 "
-                            >
-                              <img
-                                src={edit}
-                                alt="Logo"
-                                height={20}
-                                width={20}
-                              />
-                            </a>
+                            <div>
+                              {!editMode && (
+                                <a
+                                  onClick={() => handleEdit(user._id, user.name , user.gender , user.email , user.phone)}
+                                  href="#"
+                                  className="font-medium text-blue-600 dark:text-blue-500 "
+                                >
+                                  <img
+                                    src={edit}
+                                    alt="Logo"
+                                    height={20}
+                                    width={20}
+                                  />
+                                </a>
+                              )}
+                            </div>
+                            {editMode && (
+                              <button onClick={() => handleSave(user._id)} className="bg-teal-dark hover:bg-teal-700 font-futura text-white text-base font-bold  rounded-full h-9 w-16">
+                                Save
+                              </button>
+                            )}
                           </td>
                           <td className="px-6 py-4 text-right pl-2.5">
-                            <a
-                              href="#"
-                              className="font-medium text-blue-600 dark:text-blue-500 "
-                            >
-                              <img
-                                src={deleteicon}
-                                alt="Logo"
-                                height={25}
-                                width={25}
-                              />
-                            </a>
+                            <div>
+                              {!editMode && (
+                                <a
+                                  href="#"
+                                  className="font-medium text-blue-600 dark:text-blue-500 "
+                                >
+                                  <img
+                                    src={deleteicon}
+                                    alt="Logo"
+                                    height={25}
+                                    width={25}
+                                  />
+                                </a>
+                              )}
+                            </div>
                           </td>
                         </tr>
                       ))}
@@ -231,13 +358,34 @@ const ViewContact = () => {
                   />
                 </div>
                 <div className="pt-9 text-white font-futura text-2xl font-medium underline">
-                  <a href="#" onClick={handleLogout}>logout</a>
+                  <a href="#" onClick={handleLogout}>
+                    logout
+                  </a>
                 </div>
               </div>
             </footer>
           </div>
         </div>
       </div>
+      </div>
+      {Success && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 ">
+          <div className="bg-white p-8 rounded-lg text-center w-1/2 h-1/3 space-y-10">
+            <p className="text-teal-dark text-3xl font-futura  mb-4"> Your contact has been saved successfully!</p>
+
+            <button
+              onClick={handleSucsess}
+              className="bg-teal-dark hover:bg-teal-700 font-futura text-white text-xl font-bold py-2 px-4 rounded-full h-12 w-48"
+            >
+              ok
+            </button>
+
+
+
+          </div>
+        </div>
+        
+      )}
     </div>
   );
 };

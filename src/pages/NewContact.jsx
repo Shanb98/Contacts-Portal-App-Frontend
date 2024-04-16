@@ -102,7 +102,6 @@ const NewContacts = () => {
         className={`flex-1 bg-cover bg-center ${
           Success ? "filter blur-sm" : ""
         }`}
-       // style={{ backgroundImage: `url(${logo1})` }}
       >
         <div
           className="rounded-full bg-[#083F46]"
