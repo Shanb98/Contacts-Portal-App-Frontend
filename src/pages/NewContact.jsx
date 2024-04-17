@@ -1,11 +1,12 @@
-import React, { useState ,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import logo2 from "../assets/logo2.png";
 import logout from "../assets/logout.png";
 import InputField from "../components/InputField";
 import PrimaryButton from "../components/PrimaryButton";
+import * as yup from "yup";
 import Cookies from 'js-cookie';
-import {jwtDecode } from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 const NewContacts = () => {
   const [email, setEmail] = useState("");
@@ -14,90 +15,99 @@ const NewContacts = () => {
   const [gender, setGender] = useState(""); 
   const [Success, setSuccess] = useState(false);
   const [word, setWord] = useState("");
+  const [loginError, setLoginError] = useState(null);
   const navigate = useNavigate();
 
-
   useEffect(() => {
-    
-    const jwtToken = Cookies.get('jwtToken') ;
-
+    const jwtToken = Cookies.get('jwtToken');
     const decoded = jwtDecode(jwtToken);
     const jsonUser = JSON.stringify(decoded, null, 2);
     console.log(jsonUser);
     const userObject = JSON.parse(jsonUser);
-    if( userObject.user.contacts == 0){
+    if( userObject.user.contacts === 0){
       setWord("add your first contact")
-    }else{
+    } else {
       setWord("add your contact")
     }
-
   }, []);
+
+  const schema = yup.object().shape({
+    email: yup.string().email("Invalid email").required("Email is required"),
+    fullname: yup.string().required("Full name is required"),
+    phone: yup
+      .string()
+      .matches(/^(?:\+?94)?[0-9]{9,10}$/, "Invalid phone number")
+      .required("Phone number is required"),
+  });
+
   const handleEmailChange = (newValue) => {
     setEmail(newValue);
   };
+
   const handleFullnameChange = (newValue) => {
     setFullname(newValue);
   };
+
   const handlePhoneChange = (newValue) => {
     setPhone(newValue);
   };
 
   const handleGenderChange = (event) => {
-    // Update the selected gender state when a radio button is clicked
     setGender(event.target.value);
   };
 
   const handleLoginNow = () => {
-    navigate("/login"); // Navigate to the login page
+    navigate("/login");
   };
 
   const handleAddContacts = () => {
     setSuccess(false);
-    setWord("add your contact")
+    setWord("add your contact");
+    setEmail("");
+    setPhone("");
+    setFullname("");
   };
+
   const handleViewContacts = () => {
     navigate("/contacts/view"); 
-    setWord("add your contact")
+    setWord("add your contact");
   };
+
   const handleCreate = async () => {
-    console.log("Email:", email);
-    console.log("Name:", fullname);
-    console.log("Phone:", phone);
-    console.log("Gender:", gender);
     try {
-    // Extract the JWT token from local storage
-    const jwtToken = Cookies.get('jwtToken');
+      await schema.validate({ email, fullname, phone }, { abortEarly: false });
 
-    // Construct the headers object with the bearer token
-    const headers = {
-      'Authorization': `Bearer ${jwtToken}`,
-      'Content-Type': 'application/json'
-    };
+      const jwtToken = Cookies.get('jwtToken');
+      const headers = {
+        'Authorization': `Bearer ${jwtToken}`,
+        'Content-Type': 'application/json'
+      };
 
-    const payload = {
-      name: fullname,
-      phone: phone,
-      email: email,
-      gender: gender,
-    };
-    const response = await fetch('http://localhost:5001/api/contacts/create', {
-      method: 'POST',
-      headers: headers,
-      body: JSON.stringify(payload)
-    });
-      // Handle response status
+      const payload = {
+        name: fullname,
+        phone: phone,
+        email: email,
+        gender: gender,
+      };
+
+      const response = await fetch('http://localhost:5001/api/contacts/create', {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(payload)
+      });
+
       if (response.ok) {
-        console.log('contact created successfully!');
+        console.log('Contact created successfully!');
         setSuccess(true);
       } else {
         console.error('Error:', response.statusText);
         navigate("/login");
       }
     } catch (error) { 
-      console.error('Error:', error.message); 
+      console.error('Error:', error.message);
+      setLoginError(error.errors[0]);
     }
   };
-
   return (
     <div>
       <div className="bg-custom-bg min-h-screen flex flex-col justify-center items-center relative overflow-hidden">
@@ -245,7 +255,11 @@ const NewContacts = () => {
                     </div>
                   </div>
                 </div>
-                <br />
+                {loginError && (
+              <p className="text-xs text-center text-red-600 bg-pink-100 border border-red-600 rounded-md py-2 mx-auto max-w-xs">
+                {loginError}
+              </p>
+            )}
                 <br />
                 <div>
                   <PrimaryButton
