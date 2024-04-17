@@ -2,7 +2,6 @@ import React from 'react';
 
 function InputField({ label, name, type, placeholder, value, onChange }) {
   const handleInputChange = (e) => {
-    // Call the onChange function passed from the parent with the new value
     onChange(e.target.value);
   };
 

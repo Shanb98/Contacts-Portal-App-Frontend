@@ -43,32 +43,27 @@ const ViewContact = () => {
     setdeleteId(userId);
   };
   const handleDeleteContact = async () => {
-    const jwtToken = Cookies.get("jwtToken"); // Retrieve the JWT token from the cookie
+    const jwtToken = Cookies.get("jwtToken"); 
 
     try {
-      // Make a DELETE request to the backend API endpoint
       const response = await axios.delete(
         `http://localhost:5001/api/contacts/${deleteId}`,
         {
           headers: {
-            Authorization: `Bearer ${jwtToken}`, // Include the JWT token in the request headers
+            Authorization: `Bearer ${jwtToken}`, 
           },
         }
       );
 
-      // Check if the request was successful
       if (response.status === 200) {
         console.log("Contact deleted successfully:", response.data);
-        // Handle any additional logic, such as updating the UI or state
         setSuccessDelete(true);
         setdeletemodal(false);
       } else {
         console.error("Failed to delete contact:", response.data);
-        // Handle error response
       }
     } catch (error) {
       console.error("Error deleting contact:", error.message);
-      // Handle network or other errors
     }
   };
   const handleCancel = () => {
@@ -133,7 +128,6 @@ const ViewContact = () => {
       console.error("Error:", error.message);
     }
 
-    // Disable edit mode after saving
     setEditModeMap((prevEditModeMap) => ({
       ...prevEditModeMap,
       [userId]: false,

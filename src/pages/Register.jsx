@@ -66,7 +66,7 @@ const Register = () => {
   };
 
   const handleLoginNow = () => {
-    navigate("/login"); // Navigate to the login page
+    navigate("/login");
   };
 
   useEffect(() => {
