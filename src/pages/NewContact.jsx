@@ -22,7 +22,6 @@ const NewContacts = () => {
     const jwtToken = Cookies.get('jwtToken');
     const decoded = jwtDecode(jwtToken);
     const jsonUser = JSON.stringify(decoded, null, 2);
-    console.log(jsonUser);
     const userObject = JSON.parse(jsonUser);
     if( userObject.user.contacts === 0){
       setWord("add your first contact")
@@ -97,7 +96,6 @@ const NewContacts = () => {
       });
 
       if (response.ok) {
-        console.log('Contact created successfully!');
         setSuccess(true);
       } else {
         console.error('Error:', response.statusText);

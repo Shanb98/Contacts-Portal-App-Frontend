@@ -37,9 +37,6 @@ const Login = () => {
   };
 
   const handleLogin = async () => {
-    console.log("Email:", email);
-    console.log("Password:", password);
-
     try {
       const response = await axios.post(
         "http://localhost:5001/api/users/login",
@@ -51,13 +48,10 @@ const Login = () => {
 
       const jwtToken = response.data.accessToken;
 
-      console.log("JWT Token:", jwtToken);
-
       Cookies.set("jwtToken", jwtToken);
 
       const decoded = jwtDecode(jwtToken);
       const jsonUser = JSON.stringify(decoded, null, 2);
-      console.log(jsonUser);
       const userObject = JSON.parse(jsonUser);
       if( userObject.user.contacts == 0){
         navigate("/");

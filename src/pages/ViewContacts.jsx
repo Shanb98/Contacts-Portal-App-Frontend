@@ -56,7 +56,6 @@ const ViewContact = () => {
       );
 
       if (response.status === 200) {
-        console.log("Contact deleted successfully:", response.data);
         setSuccessDelete(true);
         setdeletemodal(false);
       } else {
@@ -118,7 +117,6 @@ const ViewContact = () => {
       );
 
       if (response.ok) {
-        console.log("Contact updated successfully!");
         setSuccess(true);
       } else {
         console.error("Error:", response.statusText);
