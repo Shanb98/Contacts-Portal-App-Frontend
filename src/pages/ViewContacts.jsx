@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import logo2 from "../assets/logo2.png";
 import logout from "../assets/logout.png";
-import InputField from "../components/InputField";
 import PrimaryButton from "../components/PrimaryButton";
 import edit from "../assets/edit.png";
 import deleteicon from "../assets/delete.png";
 import toggle from "../assets/toggle.png";
 import userimg from "../assets/user.png";
+import userimg1 from "../assets/userf.png";
+import line from "../assets/line.png";
 import axios from "axios";
 import Cookies from "js-cookie";
 
@@ -21,6 +22,10 @@ const ViewContact = () => {
   const [deleteName, setdeleteName] = useState("");
   const [deleteId, setdeleteId] = useState("");
   const [successDelete, setSuccessDelete] = useState(false);
+
+
+
+
   const handleContact = () => {
     navigate("/contacts/new");
   };
@@ -163,7 +168,7 @@ const ViewContact = () => {
               phone: user.phone,
             };
           });
-
+          
           setEditModeMap(initialEditModeMap);
           setEditedDataMap(initialEditedDataMap);
           setUsers(response.data);
@@ -307,7 +312,7 @@ const ViewContact = () => {
                                 className="font-medium text-blue-600 dark:text-blue-500 "
                               >
                                 <img
-                                  src={userimg}
+                                  src={user.gender === 'male' ? userimg : userimg1}
                                   alt="Logo"
                                   height={40}
                                   width={40}
@@ -316,20 +321,28 @@ const ViewContact = () => {
                             </td>
                             <td className="px-6 py-4 text-base font-semibold text-teal-dark whitespace-nowrap dark:text-teal-dark">
                               {editModeMap[user._id] ? (
-                                <input
-                                  type="text"
-                                  value={editedDataMap[user._id].name}
-                                  className="w-36 px-2 py-1 focus:outline-none bg-teal-dark bg-opacity-10"
-                                  onChange={(e) =>
-                                    setEditedDataMap({
-                                      ...editedDataMap,
-                                      [user._id]: {
-                                        ...editedDataMap[user._id],
-                                        name: e.target.value,
-                                      },
-                                    })
-                                  }
-                                />
+                                <div className="relative">
+                                  <input
+                                    type="text"
+                                    value={editedDataMap[user._id].name}
+                                    className="w-36 px-2 py-1 focus:outline-none bg-teal-dark bg-opacity-10"
+                                    onChange={(e) =>
+                                      setEditedDataMap({
+                                        ...editedDataMap,
+                                        [user._id]: {
+                                          ...editedDataMap[user._id],
+                                          name: e.target.value,
+                                        },
+                                      })
+                                    }
+                                  />
+                                  <a
+                                    href="#"
+                                    className="absolute right-0 top-0 "
+                                  >
+                                    <img src={line} height={20} width={2} />
+                                  </a>
+                                </div>
                               ) : (
                                 user.name
                               )}
@@ -370,10 +383,11 @@ const ViewContact = () => {
                             </td>
                             <td className="px-6 py-4 text-teal-dark text-base font-semibold">
                               {editModeMap[user._id] ? (
+                                <div className="relative">
                                 <input
                                   type="text"
                                   value={editedDataMap[user._id].email}
-                                  className="w-36 px-2 py-1 focus:outline-none bg-teal-dark bg-opacity-10"
+                                  className="w-60 px-2 py-1 focus:outline-none bg-teal-dark bg-opacity-10"
                                   onChange={(e) =>
                                     setEditedDataMap({
                                       ...editedDataMap,
@@ -384,16 +398,24 @@ const ViewContact = () => {
                                     })
                                   }
                                 />
+                                                                  <a
+                                    href="#"
+                                    className="absolute right-0 top-0 "
+                                  >
+                                    <img src={line} height={20} width={2} />
+                                  </a>
+                                </div>
                               ) : (
                                 user.email
                               )}
                             </td>
                             <td className="px-6 py-4 text-teal-dark text-base font-semibold">
                               {editModeMap[user._id] ? (
+                                <div className="relative">
                                 <input
                                   type="text"
                                   value={editedDataMap[user._id].phone}
-                                  className="w-36 px-2 py-1 focus:outline-none bg-teal-dark bg-opacity-10"
+                                  className="w-32 px-2 py-1 focus:outline-none bg-teal-dark bg-opacity-10"
                                   onChange={(e) =>
                                     setEditedDataMap({
                                       ...editedDataMap,
@@ -404,6 +426,13 @@ const ViewContact = () => {
                                     })
                                   }
                                 />
+                                                                  <a
+                                    href="#"
+                                    className="absolute right-0 top-0 "
+                                  >
+                                    <img src={line} height={20} width={2} />
+                                  </a>
+                                </div>
                               ) : (
                                 user.phone
                               )}

@@ -18,6 +18,7 @@ const NewContacts = () => {
 
 
   useEffect(() => {
+    
     const jwtToken = Cookies.get('jwtToken') ;
 
     const decoded = jwtDecode(jwtToken);
@@ -52,9 +53,11 @@ const NewContacts = () => {
 
   const handleAddContacts = () => {
     setSuccess(false);
+    setWord("add your contact")
   };
   const handleViewContacts = () => {
-    navigate("/contacts/view"); // Navigate to the login page
+    navigate("/contacts/view"); 
+    setWord("add your contact")
   };
   const handleCreate = async () => {
     console.log("Email:", email);
