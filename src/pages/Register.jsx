@@ -21,7 +21,9 @@ const Register = () => {
       .string()
       .min(6, "Password must be at least 6 characters")
       .required("Password is required"),
-    repassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match')
+    repassword: yup
+      .string()
+      .oneOf([yup.ref("password"), null], "Passwords must match"),
   });
 
   const handleEmailChange = (newValue) => {
@@ -38,8 +40,11 @@ const Register = () => {
 
   const handleRegister = async () => {
     try {
-      await schema.validate({ email, password, repassword }, { abortEarly: false });
-      
+      await schema.validate(
+        { email, password, repassword },
+        { abortEarly: false }
+      );
+
       const response = await axios.post(
         "https://contacts-portal-app-backend.onrender.com/api/users/register",
         {
@@ -152,18 +157,20 @@ const Register = () => {
               </div>
 
               <div className="pt-3 font-futura text-2xl font-medium underline">
-                <a href="#" onClick={handleLoginNow}>{`<`} Back to login</a>
+                <a href="#" onClick={handleLoginNow}>
+                  {`<`} Back to login
+                </a>
               </div>
             </div>
           </div>
         </div>
-        <div
-          className="flex-1 bg-[url] text-black flex items-center justify-center bg-opacity-25"
-          style={{ backgroundImage: `url(${bg})` }}
-        >
-          <div style={{ position: "relative", left: "25%", top: "30vh" }}>
-            <img src={logo1} alt="Logo" height={450} width={350} />
-          </div>
+      </div>
+      <div
+        className="flex-1 bg-[url] text-black flex items-center justify-center bg-opacity-25"
+        style={{ backgroundImage: `url(${bg})` }}
+      >
+        <div className="absolute top-50vh right-0 mr-40  lg:mr-32 ">
+          <img src={logo1} alt="Logo" height={450} width={350} />
         </div>
       </div>
       {registerSuccess && (

@@ -153,7 +153,7 @@ const Login = () => {
         className="flex-1 bg-[url] text-black flex items-center justify-center bg-opacity-25"
         style={{ backgroundImage: `url(${bg})` }}
       >
-        <div className="absolute top-50vh right-0 mr-40 lg:mr-36 ">
+        <div className="absolute top-50vh right-0 mr-40 lg:mr-32 ">
           <img src={logo1} alt="Logo" height={450} width={350} />
         </div>
       </div>
