@@ -76,7 +76,7 @@ const Login = () => {
 
   return (
     <div className="flex flex-row h-screen relative">
-      <div className="flex-1 absolute -left-[786px] -top-[370px] w-[1502px] h-[1502px] bg-[#083F46] rounded-full text-white flex items-center justify-center overflow-hidden md:w-screen md:h-screen xl:w-[1502px] xl:h-[1402px] 2xl:w-[1802px] 2xl:h-[1802px]">
+      <div className="flex-1 absolute -left-[786px] -top-[60vh] w-[1502px] h-[1502px] bg-[#083F46] rounded-full text-white flex items-center justify-center overflow-hidden md:w-screen md:h-screen xl:w-[1502px] xl:h-[1402px] 2xl:w-[1802px] 2xl:h-[1802px]">
         <div
           className="relative z-10 w-full max-w-md px-4"
           style={{ left: "23%", position: "relative" }}
@@ -153,7 +153,7 @@ const Login = () => {
         className="flex-1 bg-[url] text-black flex items-center justify-center bg-opacity-25"
         style={{ backgroundImage: `url(${bg})` }}
       >
-        <div style={{ position: "relative", left: "25%" }}>
+        <div style={{ position: "relative", left: "30%" }}>
           <img src={logo1} alt="Logo" height={450} width={350} />
         </div>
       </div>
