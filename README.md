@@ -21,12 +21,13 @@ This Contacts Portal Application is a full-stack solution developed using the ME
 - **MongoDB/Mongoose:** NoSQL database for data storage and retrieval.
 - **Bcrypt:** Library for hashing passwords.
 - **Nodemon:** Utility for auto-restarting the server during development.
+- **JWT:** JSON Web Tokens for secure authentication.
 
 ### Frontend:
 - **React.js:** JavaScript library for building user interfaces.
 - **Axios:** Promise-based HTTP client for making API requests.
 - **Yup:** Schema validation library for form validations.
-- **JWT:** JSON Web Tokens for secure authentication.
+- **js-cookie:** For managing and storing JWT tokens in the browser.
 - **Tailwind CSS:** Utility-first CSS framework for styling UI components.
 
 
