@@ -27,7 +27,7 @@ This Contacts Portal Application is a full-stack solution developed using the ME
 - **React.js:** JavaScript library for building user interfaces.
 - **Axios:** Promise-based HTTP client for making API requests.
 - **Yup:** Schema validation library for form validations.
-- **js-cookie:** For managing and storing JWT tokens in the browser.
+- **Js-cookie:** For managing and storing JWT tokens in the browser.
 - **Tailwind CSS:** Utility-first CSS framework for styling UI components.
 
 
