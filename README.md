@@ -76,7 +76,7 @@ This Contacts Portal Application is a full-stack solution developed using the ME
 
 ### Registration Page
 ![image](https://github.com/Shanb98/Contacts-Portal-App-Frontend/assets/130221905/08512ce6-a014-4b23-90e6-6a004b76f2d3)
-![image](https://github.com/Shanb98/Contacts-Portal-App-Frontend/assets/130221905/a56d6040-8646-48be-a560-d7bf39c8c392)
+![image](https://github.com/Shanb98/Contacts-Portal-App-Frontend/assets/130221905/e0c20ebb-a1e3-4e4a-b352-010f30f42b34)
 
 ### Welcome Dashboard
 ![image](https://github.com/Shanb98/Contacts-Portal-App-Frontend/assets/130221905/9ab16072-2507-40d5-8685-1162a887cbb1)
