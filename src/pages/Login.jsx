@@ -39,7 +39,7 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5001/api/users/login",
+        "https://contacts-portal-app-backend.onrender.com/api/users/login",
         {
           email: email,
           password: password,
@@ -54,7 +54,7 @@ const Login = () => {
       const jsonUser = JSON.stringify(decoded, null, 2);
       const userObject = JSON.parse(jsonUser);
       if( userObject.user.contacts == 0){
-        navigate("/");
+        navigate("/welcome");
       }else{
         navigate("/contacts/view");
       }

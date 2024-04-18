@@ -41,7 +41,7 @@ const Register = () => {
       await schema.validate({ email, password, repassword }, { abortEarly: false });
       
       const response = await axios.post(
-        "http://localhost:5001/api/users/register",
+        "https://contacts-portal-app-backend.onrender.com/api/users/register",
         {
           email: email,
           password: password,

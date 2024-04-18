@@ -89,7 +89,7 @@ const NewContacts = () => {
         gender: gender,
       };
 
-      const response = await fetch('http://localhost:5001/api/contacts/create', {
+      const response = await fetch('https://contacts-portal-app-backend.onrender.com/api/contacts/create', {
         method: 'POST',
         headers: headers,
         body: JSON.stringify(payload)

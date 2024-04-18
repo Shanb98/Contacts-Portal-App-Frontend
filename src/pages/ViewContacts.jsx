@@ -47,7 +47,7 @@ const ViewContact = () => {
 
     try {
       const response = await axios.delete(
-        `http://localhost:5001/api/contacts/${deleteId}`,
+        `https://contacts-portal-app-backend.onrender.com/api/contacts/${deleteId}`,
         {
           headers: {
             Authorization: `Bearer ${jwtToken}`, 
@@ -109,7 +109,7 @@ const ViewContact = () => {
       };
 
       const response = await axios.put(
-        `http://localhost:5001/api/contacts/${userId}`,
+        `https://contacts-portal-app-backend.onrender.com/api/contacts/${userId}`,
         payload,
         {
           headers: headers,
@@ -141,7 +141,7 @@ const ViewContact = () => {
         };
 
         const response = await axios.get(
-          "http://localhost:5001/api/contacts/getall",
+          "https://contacts-portal-app-backend.onrender.com/api/contacts/getall",
           {
             headers: headers,
           }
